@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+				xmlns:views="views.*" 
+				xmlns:services="services.*"
+				backgroundGradientColors="[0xFFFFFF, 0xFBD2F7]"
+			    creationComplete="onCreationComplete()" viewSourceURL="srcview/index.html">
+	
+	<mx:Style>
+        @font-face {
+            src: local("Comic Sans MS");
+            fontFamily: EmbeddedComicSansMS;
+            fontWeight: normal;
+        }
+    </mx:Style>
+    
+	<mx:Script>
+		<![CDATA[
+			import mx.core.UIComponent;
+			import com.ImagePiecewise;
+			import mx.effects.Resize;
+			import com.CImage;
+			import mx.containers.Box;
+			import mx.containers.VBox;
+			import mx.containers.Canvas;
+			import mx.controls.Image;
+			import mx.containers.Panel;
+			
+			protected var ptPanel:Point; 
+			protected var index:int = 0;
+			protected var canvasList:Array;
+			protected var wid:int = 100;
+			protected var w:int = 100;
+			protected var posLast:int=0;
+			protected var posLast2:int=0;
+
+			protected function onCreationComplete():void
+			{
+				ptPanel = new Point(5, 140);
+				canvasList = new Array();
+			}
+
+			private function onLoadCompleted(e:Event):void
+			{
+				var imgList:Array = photoService.imgList;	
+				//var img:Image = imgList[index];
+				var uic:ImagePiecewise = imgList[index] as ImagePiecewise;
+				uic.id = index.toString();
+				this.addChild(uic);
+				canvasList.push(uic);
+				
+				uic.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+				uic.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+				uic.addEventListener(MouseEvent.CLICK, onClickImage);
+				uic.buttonMode = true;
+				uic.useHandCursor = true;
+				uic.xFrom = ptPanel.x;
+				uic.xTo = ptPanel.x;
+				uic.yTo = ptPanel.y;
+				uic.xPieces = 4;
+				uic.yPieces = 4;
+				uic.width = this.width;
+				uic.height = this.height;
+				uic.traverse();
+				
+				ptPanel.x += wid + 5;
+				
+				if ( ( ptPanel.x + wid ) >=  this.width ) {
+					ptPanel.x = 5;
+					ptPanel.y += wid + 5;
+				}
+				index ++;
+				
+				if ( index == photoService.photoFeed.length) {
+			
+					//onMoveStart();
+				}
+			}
+			
+			private function onMouseOut(e:MouseEvent):void
+			{
+				var resize:Resize = new Resize();
+				var uic:UIComponent = e.currentTarget as UIComponent;
+				uic.alpha = 1;
+				resize.target = uic;
+				resize.widthFrom = 105;
+				resize.widthTo = 100;
+				resize.heightFrom = 105;
+				resize.heightTo = 100;
+				resize.duration = 1000;
+				resize.end();
+				resize.play();
+			}
+			
+			private function onMouseOver(e:MouseEvent):void
+			{
+				var resize:Resize = new Resize();
+				var uic:UIComponent = e.currentTarget as UIComponent;
+				uic.alpha = .6;
+				resize.target = uic;
+				resize.widthFrom = 100;
+				resize.widthTo = 105;
+				resize.heightFrom = 100;
+				resize.heightTo = 105;
+				resize.duration = 1000;
+				resize.end();
+				resize.play();
+			}
+			
+			private function findCanvas(pos:int):int
+			{
+				var pt:Point = new Point(ptPanel.x, ptPanel.y);
+				switch (pos)
+				{
+					case 0:
+					pt.x -= (wid + 5);
+					break;
+					
+					case 1:
+					pt.y -= (wid + 5);
+					break;
+					
+					case 2:
+					pt.x += (wid + 5);
+					break;
+					
+					case 3:
+					pt.y += (wid + 5);
+					break;
+				}	
+				if (( pt.x < 0 ) || ( pt.y > this.width ) ||
+				    ( pt.y < 0 ))
+				    return -1;
+				    
+				for ( var i:int=0; i<canvasList.length; i++) {
+					var img:Image = canvasList[i];
+					if (( img.x == pt.x ) && ( img.y == pt.y ))
+						return i;
+				}
+				return -1;
+			}
+			
+			private function onMoveStart():void
+			{
+				var count:int = 0;
+				var index:int = -1;
+
+				if ( index >= 0) {
+					var img:Image = canvasList[index];
+				}
+			}
+			
+/////////////////////////////////////////////////////////////////////
+// events
+			private function onMoveEnd():void
+			{
+				onMoveStart();
+			}
+			
+			private function onClickImage(e:MouseEvent):void
+            {
+            	var imp:ImagePiecewise = e.currentTarget as ImagePiecewise;
+            	var url:String = imp.url;
+            	url = url.toLowerCase();
+            	url = url.replace("thumb/", "big/");
+            	url = url.replace("thumb", "");
+            	url = url.replace(".jpg", ".JPG");
+            	navigateToURL(new URLRequest(url), "_blank");
+            }
+            
+            private function onClickSlideShow():void
+            {
+            	navigateToURL(new URLRequest("http://www.ctyeung.com/flex/gallery/FlexEx1.html"), "_blank");
+            }
+            
+            private function onMouseOverLabel():void
+            {
+            	lblSlide.alpha = .5;
+            }
+            
+            private function onMouseOutLabel():void
+            {
+            	lblSlide.alpha = 1;
+            }
+		]]>
+	</mx:Script>
+	<mx:Move id="moveEffect" duration="2000" effectEnd="onMoveEnd()"/>
+	<services:PhotoService 	id="photoService" loadCompleted="onLoadCompleted(event)" />
+	<mx:Canvas>
+	<mx:Label id="lblMonth" text="December" 
+					fontSize="42" fontFamily="EmbeddedComicSansMS" color="0x9900FF" 
+					x="{this.width/2-lblMonth.width/2}" y="10"/>
+	</mx:Canvas>
+		<mx:Label 	id="lblSlide" text="SlideShow" click="onClickSlideShow()" 
+					buttonMode="true" useHandCursor="true" x="10" y="20"
+					fontSize="20" fontFamily="EmbeddedComicSansMS" color="0x9900FF" 
+					mouseOut="onMouseOutLabel()" mouseOver="onMouseOverLabel()"/>
+</mx:Application>
