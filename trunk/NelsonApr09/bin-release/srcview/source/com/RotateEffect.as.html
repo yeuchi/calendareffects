@@ -1,0 +1,40 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>RotateEffect.as</title>
+<link rel="stylesheet" type="text/css" href="../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">//http://flexscript.wordpress.com/2008/09/16/flex-creating-custom-tweeneffect-objects-in-flex/
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">com</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span>.<span class="ActionScriptDefault_Text">effects</span>.<span class="ActionScriptDefault_Text">IEffectInstance</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span>.<span class="ActionScriptDefault_Text">effects</span>.<span class="ActionScriptDefault_Text">TweenEffect</span>; 
+
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">RotateEffect</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">TweenEffect</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+       <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">posFrom</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span>;
+       <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">posTo</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span>;
+  
+       <span class="ActionScriptComment">// Define constructor with optional argument.
+</span>       <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">RotateEffect</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">targetObj</span><span class="ActionScriptOperator">:*</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+           <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">targetObj</span><span class="ActionScriptBracket/Brace">)</span>;
+           <span class="ActionScriptDefault_Text">instanceClass</span><span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">RotateTweenInstance</span>;            
+       <span class="ActionScriptBracket/Brace">}</span>
+
+       <span class="ActionScriptComment">// Override getAffectedProperties() method to return &quot;rotation&quot;.
+</span>       <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">getAffectedProperties</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptBracket/Brace">{</span>
+           <span class="ActionScriptReserved">return</span> <span class="ActionScriptBracket/Brace">[]</span>;
+       <span class="ActionScriptBracket/Brace">}</span>
+    
+       <span class="ActionScriptComment">// Override initInstance() method.
+</span>       <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">initInstance</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">inst</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">IEffectInstance</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">:</span><span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+           <span class="ActionScriptReserved">super</span>.<span class="ActionScriptDefault_Text">initInstance</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">inst</span><span class="ActionScriptBracket/Brace">)</span>;
+           <span class="ActionScriptDefault_Text">RotateTweenInstance</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">inst</span><span class="ActionScriptBracket/Brace">)</span>.<span class="ActionScriptDefault_Text">posFrom</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">posFrom</span>;
+           <span class="ActionScriptDefault_Text">RotateTweenInstance</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">inst</span><span class="ActionScriptBracket/Brace">)</span>.<span class="ActionScriptDefault_Text">posTo</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">posTo</span>;
+       <span class="ActionScriptBracket/Brace">}</span> 
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>
