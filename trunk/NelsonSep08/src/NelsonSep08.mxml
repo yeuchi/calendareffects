@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+				xmlns:views="views.*" 
+				xmlns:services="services.*"
+				layout="absolute" 
+				backgroundColor="0xFBD2F7"
+				creationComplete="onCreationComplete()" viewSourceURL="srcview/index.html">
+	<mx:Style>
+        @font-face {
+            src: local("Comic Sans MS");
+            fontFamily: EmbeddedComicSansMS;
+            fontWeight: normal;
+        }
+    </mx:Style>
+    
+    	<mx:Script>
+		<![CDATA[
+			import mx.effects.Move;
+			import mx.events.EffectEvent;
+			import mx.effects.Rotate;
+			import mx.effects.Resize;
+			import com.CImage;
+			import mx.containers.Box;
+			import mx.containers.VBox;
+			import mx.containers.Canvas;
+			import mx.controls.Image;
+			import mx.containers.Panel;
+			
+			protected var index:int = 0;
+			protected var imgList:Array;
+			protected var posList:Array;
+			[Bindable]protected var _wid:int;
+			[Bindable]protected var _len:int;
+			[Bindable]protected var _thumbWid:int = 100;
+			protected var bFirstTime:Boolean = true;
+
+			protected function onCreationComplete():void
+			{
+				var pt:Point = new Point(10, 140);
+				posList = new Array();
+				posList.push(pt);
+			}
+
+			private function onLoadCompleted(e:Event):void
+			{
+				imgList = photoService.imgList;	
+				var img:Image = imgList[index];
+				img.id = index.toString();
+				img.width = _thumbWid;
+				img.height = _thumbWid;
+				img.buttonMode=true;
+				img.useHandCursor=true;
+				img.addEventListener(MouseEvent.CLICK, onClickImage);
+				img.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+				img.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+				
+				var pt:Point = posList[index];
+				img.x = pt.x;
+				img.y = pt.y;
+				
+				var newPt:Point = new Point();
+				
+				newPt.x = pt.x + _thumbWid + 10;
+				newPt.y = pt.y;
+				
+				if ( ( newPt.x + _thumbWid ) >=  this.width ) {
+					newPt.x = 10;
+					newPt.y = pt.y + _thumbWid + 10;
+				}
+				posList.push(newPt);
+				this.addChild(img);
+				var move:Move = new Move(img);
+				move.xTo = Math.random() * this.width*.9;
+				move.yTo = Math.random() * this.height*.8;
+				move.duration = 6000;
+				move.addEventListener(EffectEvent.EFFECT_END, onMoveEnd, false, 0, true);
+				move.play();
+				index ++;
+				
+				_wid = this.width;
+				_len = this.height;
+			}
+			
+			private function onMoveEnd(e:Event):void
+			{
+				var move:Move = e.currentTarget as Move;
+				move.xTo = Math.random() * this.width*.9;
+				move.yTo = Math.random() * this.height*.8;
+				move.play();
+			}
+			
+			private function onMouseOut(e:MouseEvent):void
+			{
+				var img:Image = e.currentTarget as Image;
+				img.alpha = 1;
+			}
+			
+			private function onMouseOver(e:MouseEvent):void
+			{
+				var img:Image = e.currentTarget as Image;
+				img.alpha = .6;
+			}
+			
+/////////////////////////////////////////////////////////////////////
+// events
+			
+			private function onClickImage(e:MouseEvent):void
+            {
+            	var img:CImage = e.currentTarget as CImage;
+            	var url:String = img.url;
+            	url = url.toLowerCase();
+            	url = url.replace("small/", "big/");
+            	url = url.replace("small", "");
+            	navigateToURL(new URLRequest(url), "_blank");
+            }
+            
+            private function onClickSlideShow():void
+            {
+            	navigateToURL(new URLRequest("http://www.ctyeung.com/flex/gallery/FlexEx1.html"), "_blank");
+            }
+            
+            private function onMouseOverLabel():void
+            {
+            	lblSlide.alpha = .5;
+            }
+            
+            private function onMouseOutLabel():void
+            {
+            	lblSlide.alpha = 1;
+            }
+		]]>
+	</mx:Script>
+	
+	
+	<services:PhotoService id="photoService" loadCompleted="onLoadCompleted(event)"/>
+	<mx:Canvas>
+	<mx:Label id="lblMonth" text="September" 
+					fontSize="42" fontFamily="EmbeddedComicSansMS" color="0x9900FF" 
+					x="{this.width/2-lblMonth.width/2}" y="10"/>
+	</mx:Canvas>
+		<mx:Label 	id="lblSlide" text="SlideShow" click="onClickSlideShow()" 
+					buttonMode="true" useHandCursor="true" x="10" y="20"
+					fontSize="20" fontFamily="EmbeddedComicSansMS" color="0x9900FF" 
+					mouseOut="onMouseOutLabel()" mouseOver="onMouseOverLabel()"/>
+</mx:Application>
