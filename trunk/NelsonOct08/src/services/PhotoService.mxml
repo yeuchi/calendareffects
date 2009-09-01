@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 	xmlns:mx="http://www.adobe.com/2006/mxml" 
+			creationComplete="onCreationComplete()">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Image;
+		]]>
+	</mx:Script>
+	
+	<mx:Metadata>
+		[Event(name="loadCompleted", type="flash.events.Event")]
+	</mx:Metadata>		
+	
+	<mx:Script>
+		<![CDATA[
+			import com.CImage;
+			import mx.controls.Image;
+			import mx.controls.Image;
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;
+			
+			public var imgList:Array;
+			public var imgPaths:Array;
+            private var index:int=0;
+            private var loader:Loader;
+            
+			[Bindable]public var photoFeed:ArrayCollection;
+	        [Bindable]private var imgURL:String;
+			
+			private var urlStr:String = "http://www.ctyeung.com/php/dailyPics.php?path=daily/oct08/thumb/";
+	        private var imgURLPrefix:String ="http://www.ctyeung.com/peanut/daily/oct08/thumb/";
+				
+			protected function onCreationComplete():void
+			{
+				imgList = new Array();
+				imgPaths = new Array();
+				requestPhotos();
+			}
+			
+			protected function onMouseClick(e:Event):void
+			{
+				var img:Image = e.currentTarget as Image;
+				img.includeInLayout = true;
+			}
+
+/////////////////////////////////////////////////////////////////////
+// photo load events
+			
+			protected function requestPhotos():void {
+            	if (photoFeed) {
+            		photoFeed.removeAll();
+            		photoFeed = null;
+            	}
+            	
+            	photoService.url = urlStr;	
+                photoService.cancel();
+                var params:Object = new Object();
+                params.format = 'rss_200_enc';
+                photoService.send(params);
+            }
+            
+			protected function photoHandler(event:ResultEvent):void {
+                 photoFeed = event.result.html.body.p.data as ArrayCollection;
+                 filter(photoFeed);
+                 onLoadImage();
+            }
+            
+            protected function filter(photoFeed:ArrayCollection):void
+            {
+            	for ( var i:int=0; i<photoFeed.length; i++ ) {
+            		var name:String = photoFeed[i].credit;
+            		if ( name.length < 4 )
+            			photoFeed.removeItemAt(i);
+            	}
+            }
+            
+            protected function onLoadImage():void
+            {
+            	if (!photoFeed)
+            		return;
+            		
+            	if ( index >= photoFeed.length )
+            		return;
+            		
+        		var fileName:String = photoFeed[index].credit;
+				imgURL = imgURLPrefix+fileName;
+				loader = new Loader();
+				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onImageLoaded, false, 0, true);
+				loader.load(new URLRequest(imgURL));
+				imgPaths.push(imgURL);
+			}
+			
+			protected function onImageLoaded(e:Event):void
+			{
+				var img:CImage = new CImage();
+				img.source = loader.content;
+				img.url = imgURL;
+				imgList.push(img);
+				index ++;
+				dispatchEvent(new Event("loadCompleted"));
+				onLoadImage();
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:HTTPService id="photoService" result="photoHandler(event)"/>
+	
+</mx:Canvas>
