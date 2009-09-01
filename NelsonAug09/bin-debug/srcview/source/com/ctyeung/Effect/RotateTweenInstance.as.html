@@ -1,0 +1,73 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>RotateTweenInstance.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// ==================================================================
+</span><span class="ActionScriptComment">// Module:        RotateTweener
+</span><span class="ActionScriptComment">//
+</span><span class="ActionScriptComment">// Description:    Tweener impelementation for radial travel.
+</span><span class="ActionScriptComment">//                Adobe code modified
+</span><span class="ActionScriptComment">//
+</span><span class="ActionScriptComment">// Reference:    http://flexscript.wordpress.com/2008/09/16/flex-creating-custom-tweeneffect-objects-in-flex/
+</span><span class="ActionScriptComment">//
+</span><span class="ActionScriptComment">// Author(s):    Adobe
+</span><span class="ActionScriptComment">//                C.T. Yeung            cty 
+</span><span class="ActionScriptComment">//
+</span><span class="ActionScriptComment">// History:        Modified for use in August09 calendar and RadialTileList    cty
+</span><span class="ActionScriptComment">// ==================================================================
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">ctyeung</span>.<span class="ActionScriptDefault_Text">Effect</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span>.<span class="ActionScriptDefault_Text">core</span>.<span class="ActionScriptDefault_Text">Application</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span>.<span class="ActionScriptDefault_Text">effects</span>.<span class="ActionScriptDefault_Text">Tween</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span>.<span class="ActionScriptDefault_Text">effects</span>.<span class="ActionScriptDefault_Text">effectClasses</span>.<span class="ActionScriptDefault_Text">TweenEffectInstance</span>;
+
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">RotateTweenInstance</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">TweenEffectInstance</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptComment">// Define parameters for the effect.
+</span>        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">posFrom</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span>;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">posTo</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Array</span>;
+  
+  
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">RotateTweenInstance</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">targetObj</span><span class="ActionScriptOperator">:*</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">targetObj</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+  
+        <span class="ActionScriptComment">// Override play() method class.
+</span>        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">play</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">// All classes must call super.play().
+</span>            <span class="ActionScriptReserved">super</span>.<span class="ActionScriptDefault_Text">play</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptComment">// Create a Tween object. The tween begins playing immediately.
+</span>            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tween</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Tween</span> <span class="ActionScriptOperator">=</span> 
+                <span class="ActionScriptDefault_Text">createTween</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">this</span>, <span class="ActionScriptDefault_Text">posFrom</span>, <span class="ActionScriptDefault_Text">posTo</span>, <span class="ActionScriptDefault_Text">duration</span><span class="ActionScriptBracket/Brace">)</span>;  
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptComment">// Override onTweenUpdate() method.
+</span>        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">onTweenUpdate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">val</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">:</span><span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">angle</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">radian</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">val</span><span class="ActionScriptBracket/Brace">[</span>0<span class="ActionScriptBracket/Brace">])</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">wid</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span>  <span class="ActionScriptDefault_Text">Application</span>.<span class="ActionScriptDefault_Text">application</span>.<span class="ActionScriptDefault_Text">stage</span>.<span class="ActionScriptDefault_Text">width</span><span class="ActionScriptOperator">/</span>2;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">len</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Application</span>.<span class="ActionScriptDefault_Text">application</span>.<span class="ActionScriptDefault_Text">stage</span>.<span class="ActionScriptDefault_Text">height</span><span class="ActionScriptOperator">/</span>2;
+            <span class="ActionScriptDefault_Text">target</span>.<span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Math</span>.<span class="ActionScriptDefault_Text">cos</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">angle</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">*</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">val</span><span class="ActionScriptBracket/Brace">[</span>1<span class="ActionScriptBracket/Brace">])</span><span class="ActionScriptOperator">+</span><span class="ActionScriptDefault_Text">wid</span>;<span class="ActionScriptComment">//+Math.sin(angle)*(val[1]+wid);
+</span>            <span class="ActionScriptDefault_Text">target</span>.<span class="ActionScriptDefault_Text">y</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Math</span>.<span class="ActionScriptDefault_Text">sin</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">angle</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">*</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">val</span><span class="ActionScriptBracket/Brace">[</span>1<span class="ActionScriptBracket/Brace">])</span><span class="ActionScriptOperator">+</span><span class="ActionScriptDefault_Text">len</span>;<span class="ActionScriptComment">//+Math.cos(angle)*(val[1]+len);
+</span>        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">radian</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">degree</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Number</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">Math</span>.<span class="ActionScriptDefault_Text">PI</span> <span class="ActionScriptOperator">/</span> 180 <span class="ActionScriptOperator">*</span> <span class="ActionScriptDefault_Text">degree</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+  
+        <span class="ActionScriptComment">// Override onTweenEnd() method.
+</span>        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">onTweenEnd</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">val</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">:</span><span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">// All classes that implement onTweenEnd() 
+</span>            <span class="ActionScriptComment">// must call    super.onTweenEnd().
+</span>            <span class="ActionScriptReserved">super</span>.<span class="ActionScriptDefault_Text">onTweenEnd</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">val</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span>
+</pre></body>
+</html>
