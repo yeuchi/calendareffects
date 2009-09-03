@@ -18,11 +18,6 @@ package com.ctyeung.Effect
 	
 	public class RadialMove extends RadialEffect
 	{
-		protected var _angleFrom:Number=0;		// [in] starting angle
-		protected var _angleTo:Number=0;		// [in] destination angle
-		protected var _radius:Number=0;			// [in] offset from center
-		protected var _center:Point;			// [in] reference center from sweep
-		
 		public function RadialMove(target:Object=null,
 								   center:Point=null,
 								   angleFrom:Number=0,
@@ -30,55 +25,54 @@ package com.ctyeung.Effect
 								   radius:Number=0)
 		{
 			super();
-			_center = new Point();
+			posFrom = [0,0,0];
+			posTo   = [0,0,0];
 			
 			if(target)	this.target = target;
+			if(angleFrom) posFrom[RadialTweenInstance.ANGLE_INDEX] = angleFrom;
+			if(angleTo)	  posTo[RadialTweenInstance.ANGLE_INDEX] = angleTo;
+			if(radius) {
+				 posFrom[RadialTweenInstance.RADIUS_INDEX] = radius;
+				 posTo[RadialTweenInstance.RADIUS_INDEX] = radius;			
+			}	 
 			if(center) {
-				_center.x = center.x;
-				_center.y = center.y;				
+				posFrom[RadialTweenInstance.CENTER_X_INDEX] = center.x;
+				posFrom[RadialTweenInstance.CENTER_Y_INDEX] = center.y;
+				posTo[RadialTweenInstance.CENTER_X_INDEX] = center.x;
+				posTo[RadialTweenInstance.CENTER_Y_INDEX] = center.y;
 			}
-			if(angleFrom) _angleFrom = angleFrom;
-			if(angleTo)	  _angleTo = angleTo;
-			if(radius)	  _radius = radius;
 			
-			posFrom = [_angleFrom, _radius, _center.x];
-			posTo   = [_angleTo, _radius, _center.y];
 		}
 		
 /////////////////////////////////////////////////////////////////////
 // properties
 
 		public function set angleFrom(degrees:Number):void {
-			_angleFrom = degrees;
 			posFrom[RadialTweenInstance.ANGLE_INDEX] = degrees;
 		}	
 		
 		public function get angleFrom():Number {
-			return _angleFrom;
+			return posFrom[RadialTweenInstance.ANGLE_INDEX];
 		}
 		
 		public function set angleTo(degrees:Number):void {
-			_angleTo = degrees;
 			posTo[RadialTweenInstance.ANGLE_INDEX] = degrees;
 		}
 		
 		public function get angleTo():Number {
-			return _angleTo;
+			return posTo[RadialTweenInstance.ANGLE_INDEX];
 		}
 		
 		public function set radius(pixels:Number):void {
-			_radius = pixels;
 			posFrom[RadialTweenInstance.RADIUS_INDEX] = pixels;
 			posTo[RadialTweenInstance.RADIUS_INDEX] = pixels;
 		}
 		
 		public function get radius():Number {
-			return _radius;
+			return posFrom[RadialTweenInstance.RADIUS_INDEX];
 		}
 		
 		public function set center(midPoint:Point):void {
-			_center.x = midPoint.x;
-			_center.y = midPoint.y;
 			posFrom[RadialTweenInstance.CENTER_X_INDEX] = midPoint.x;
 			posFrom[RadialTweenInstance.CENTER_Y_INDEX] = midPoint.y;
 			posTo[RadialTweenInstance.CENTER_X_INDEX] = midPoint.x;
@@ -86,7 +80,8 @@ package com.ctyeung.Effect
 		}
 		
 		public function get center():Point {
-			return _center;
+			return new Point(posFrom[RadialTweenInstance.CENTER_X_INDEX],
+							 posFrom[RadialTweenInstance.CENTER_Y_INDEX]);
 		}
 	}
 }
