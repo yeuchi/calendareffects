@@ -13,7 +13,7 @@
     
     <mx:Script>
         <![CDATA[
-        	import com.ctyeung.Effect.CImage;
+        	import com.ctyeung.renderer.CImage;
             import mx.controls.Image;
             import mx.controls.Image;
             import mx.rpc.events.ResultEvent;
