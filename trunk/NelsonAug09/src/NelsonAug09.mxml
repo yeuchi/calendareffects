@@ -26,9 +26,10 @@
     
         <mx:Script>
         <![CDATA[
+        	import com.ctyeung.renderer.CImage;
+        	import com.ctyeung.Effect.RadialMove;
         	import mx.effects.easing.Bounce;
-        	import com.ctyeung.Effect.RotateEffect;
-        	import com.ctyeung.Effect.CImage;
+        	import com.ctyeung.Effect.RadialEffect;
             import mx.effects.Parallel;
             import mx.events.EffectEvent;
             import mx.effects.Rotate;
@@ -47,7 +48,7 @@
             [Bindable]protected var _thumbWid:int = 100;
             [Bindable]protected var _duration:int = 2000;
             protected var parallel:Parallel;
-            protected var rotateIn:RotateEffect;
+			protected var radialMove:RadialMove;
 			protected var w:int;
 			protected var h:int;
 			
@@ -55,9 +56,8 @@
             {
             	posList = new Array();
             	ptPanel = new Point(5, 140);
-                rotateIn  = new RotateEffect();
-                //rotateIn.easingFunction = Bounce.easeOut;
-                rotateIn.duration = 4000;
+               radialMove = new RadialMove();
+               radialMove.duration = 4000;
 				w = Application.application.stage.width/2;
                 h = Application.application.stage.height/2;                
             }
@@ -139,8 +139,7 @@
             }
             
             protected function getAngle(pt:Point, radius:Number):Number {
-            	var opp:Number = pt.x - Application.application.stage.width/2;
-            	opp = (opp<0)?opp*-1:opp;
+            	var opp:Number = Math.abs(pt.x - Application.application.stage.width/2);
             	var angle:Number = Math.asin(opp/radius);
             	return toDegree(angle);
             }
@@ -185,10 +184,13 @@
                 var last:int = (index>=imgList.length)?0:index;
                 
                 var img:CImage = imgList[last] as CImage;
-                rotateIn.target = img;
-                rotateIn.posFrom = new Array(img.angle,img.radius);
-                rotateIn.posTo = new Array(img.angle+360,img.radius);
-                parallel.addChild(rotateIn);
+                radialMove.target 	 = img;
+                radialMove.angleFrom = img.angle;
+                radialMove.angleTo 	 = img.angle + 360;
+                radialMove.radius 	 = img.radius;
+                radialMove.center 	 = new Point(Application.application.stage.width/2,
+                						 	     Application.application.stage.height/2);
+                parallel.addChild(radialMove);
                 parallel.end();
                 parallel.play();
                 

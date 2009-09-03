@@ -7,7 +7,7 @@
 //
 // History:		for August09 calendar and RadialTileList	cty
 // ==================================================================
-package com.ctyeung.Effect
+package com.ctyeung.renderer
 {
     import mx.controls.Image;
 
