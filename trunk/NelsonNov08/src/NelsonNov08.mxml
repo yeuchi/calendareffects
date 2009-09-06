@@ -207,8 +207,8 @@
 		]]>
 	</mx:Script>
 	
-	<mx:Resize id="sizeBig" duration="{_duration}" widthFrom="{_thumbWid}" heightFrom="{_thumbWid}" widthTo="200" heightTo="200"/>
-	<mx:Resize id="sizeSmall" duration="{_duration}" widthFrom="200" heightFrom="200" widthTo="{_thumbWid}" heightTo="{_thumbWid}"/>
+	<mx:Resize id="sizeBig" duration="{_duration}" widthFrom="{_thumbWid}" heightFrom="{_thumbWid}" widthTo="300" heightTo="300"/>
+	<mx:Resize id="sizeSmall" duration="{_duration}" widthFrom="300" heightFrom="300" widthTo="{_thumbWid}" heightTo="{_thumbWid}"/>
 	<mx:Move id="moveIn" duration="{_duration}" />
 	<mx:Move id="moveOut" duration="{_duration}" />
 	
