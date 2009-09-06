@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
 				xmlns:views="views.*" 
-				xmlns:services="services.*"
+				xmlns:services="com.ctyeung.services.*"
 				layout="absolute" 
 				backgroundColor="0xFBD2F7"
 				creationComplete="onCreationComplete()" viewSourceURL="srcview/index.html">
@@ -15,13 +15,13 @@
     
     	<mx:Script>
 		<![CDATA[
-			import mx.effects.FxRotate;
+			import com.ctyeung.transition.Rotate3D;
+			import com.ctyeung.tile.CImage;
+			import mx.core.UIComponent;
 			import mx.effects.Parallel;
 			import mx.events.EffectEvent;
-			import mx.effects.FxRotate3D;
 			import mx.effects.Rotate;
 			import mx.effects.Resize;
-			import com.CImage;
 			import mx.containers.Box;
 			import mx.containers.VBox;
 			import mx.containers.Canvas;
@@ -37,14 +37,19 @@
 			[Bindable]protected var _duration:int = 2000;
 			protected var bFirstTime:Boolean = true;
 			protected var parallel:Parallel;
+			protected var rotate:Rotate3D;
+			protected var rotateIn:Rotate3D;
 
 			protected function onCreationComplete():void
 			{
 				var pt:Point = new Point(10, 140);
 				posList = new Array();
 				posList.push(pt);
+				
+				rotate = new Rotate3D();
+				rotateIn = new Rotate3D();
 			}
-
+			
 			private function onLoadCompleted(e:Event):void
 			{
 				imgList = photoService.imgList;	
@@ -73,12 +78,13 @@
 				}
 				posList.push(newPt);
 				this.addChild(img);
-				var fxRotate:FxRotate3D = new FxRotate3D(img);
-				fxRotate.xTo = Math.random() * 360;
-				fxRotate.yTo = Math.random() * 360;
-				fxRotate.zTo = Math.random() * 360;
-				fxRotate.end();
-				fxRotate.play();
+				
+				rotate.target = img;
+				rotate.angleXTo = Math.random() * 360;
+				rotate.angleYTo = Math.random() * 360;
+				rotate.angleZTo = Math.random() * 360;
+				rotate.end();
+				rotate.play();
 				index ++;
 				
 				if ( index == photoService.photoFeed.length) {
@@ -135,30 +141,28 @@
 				
 				if ( !bFirstTime )
 				{
-					var fxRotateOut:FxRotate3D = new FxRotate3D();
-					fxRotateOut.duration = _duration;
-					fxRotateOut.target = imgList[last];
-					fxRotateOut.xTo = 0;
-					fxRotateOut.yTo = 0;
-					fxRotateOut.zTo = 0;
-					fxRotateOut.xFrom = 0;
-					fxRotateOut.yFrom = 0;
-					fxRotateOut.zFrom = 0;
-					parallel.addChild(fxRotateOut);
+					rotate.duration = _duration;
+					rotate.target = imgList[last];
+					rotate.angleXTo = 0;
+					rotate.angleYTo = 0;
+					rotate.angleZTo = 0;
+					rotate.angleXFrom = 0;
+					rotate.angleYFrom = 0;
+					rotate.angleZFrom = 0;
+					parallel.addChild(rotate);
 				}
-				var fxRotateIn:FxRotate3D = new FxRotate3D();
-				fxRotateIn.duration = _duration;
-				fxRotateIn.target = img;
-				fxRotateIn.xTo = 0;
-				fxRotateIn.yTo = 0;
-				fxRotateIn.zTo = 0;
-				fxRotateIn.xFrom = Math.random() * 360;
-				fxRotateIn.yFrom = Math.random() * 360;
-				fxRotateIn.zFrom = Math.random() * 360;
+				rotateIn.duration = _duration;
+				rotateIn.target = img;
+				rotateIn.angleXTo = 0;
+				rotateIn.angleYTo = 0;
+				rotateIn.angleZTo = 0;
+				rotateIn.angleXFrom = Math.random() * 360;
+				rotateIn.angleYFrom = Math.random() * 360;
+				rotateIn.angleZFrom = Math.random() * 360;
 				
 				parallel.addChild(moveIn);
 				parallel.addChild(sizeBig);
-				parallel.addChild(fxRotateIn);
+				parallel.addChild(rotateIn);
 				parallel.end();
 				parallel.play();
 				
