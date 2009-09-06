@@ -1,4 +1,4 @@
-package com
+package com.ctyeung.tile
 {
 	import mx.controls.Image;
 
