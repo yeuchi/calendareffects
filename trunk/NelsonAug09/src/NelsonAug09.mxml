@@ -188,8 +188,9 @@
                 radialMove.angleFrom = img.angle;
                 radialMove.angleTo 	 = img.angle + 360;
                 radialMove.radius 	 = img.radius;
-                radialMove.center 	 = new Point(Application.application.stage.width/2,
-                						 	     Application.application.stage.height/2);
+                radialMove.center 	 = new Point(this.width/2, this.height/2);
+                //new Point(Application.application.stage.width/2,
+                	//					 	     Application.application.stage.height/2);
                 parallel.addChild(radialMove);
                 parallel.end();
                 parallel.play();
