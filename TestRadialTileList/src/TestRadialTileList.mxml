@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+				xmlns:services="services.*" 
+				xmlns:view="com.ctyeung.defaultTileList.*"
+				layout="absolute"
+				backgroundGradientColors="[0xFFFFFF, 0xFBD2F7]"
+			    creationComplete="onCreationComplete()">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.ctyeung.events.RadialTileListEvent;
+			import mx.events.ListEvent;
+			import mx.collections.ArrayCollection;
+			import com.ctyeung.Tile.CImage;
+			import mx.effects.Resize;
+			import com.ctyeung.defaultTileList.RadialTileList;
+			
+			public static const RADIAL_WID:int = 400;
+			protected function onCreationComplete():void {
+				radialTiles.setAnchorPoint(new Point(RADIAL_WID/2, RADIAL_WID/2));
+				radialTiles.rise(RADIAL_WID/2);
+			}
+			
+			private function onLoadCompleted(e:Event):void {
+				radialTiles.updateDisplay();
+			}
+	
+/////////////////////////////////////////////////////////////////////
+// Slide show
+            
+            private function onClickSlideShow():void {
+            	navigateToURL(new URLRequest("http://www.ctyeung.com/flex/gallery/FlexEx1.html"), "_blank");
+            }
+            
+            private function onMouseOverLabel():void {
+            	lblSlide.alpha = .5;
+            }
+            
+            private function onMouseOutLabel():void {
+            	lblSlide.alpha = 1;
+            }
+            			
+/////////////////////////////////////////////////////////////////////
+// Item Renderer
+
+			private function onRollOut(e:RadialTileListEvent):void {
+				var obj:Object = e.currentTarget;
+				obj.alpha = 1;
+			}
+			
+			private function onRollOver(e:RadialTileListEvent):void {
+				var obj:Object = e.currentTarget;
+				obj.alpha = .6;
+			}
+			
+			private function onClick(e:RadialTileListEvent):void {
+            	var obj:Object = radialTiles.data[radialTiles.selectedIndex];
+            	var url:String = obj.url;
+            	url = url.toLowerCase();
+            	url = url.replace("thumb/", "big/");
+            	url = url.replace("thumb", "");
+            	navigateToURL(new URLRequest(url), "_blank");
+            }
+			
+			protected function onBtnOpen():void {
+				radialTiles.open();
+			}
+			
+			protected function onBtnClose():void {
+				radialTiles.close();
+			}
+		]]>
+	</mx:Script>
+	
+	<services:PhotoService id="photoService" loadCompleted="onLoadCompleted(event)"/>
+	<mx:VBox width="100%" height="100%">
+		<mx:HBox horizontalAlign="center" width="100%">
+			<mx:Label id="lblMonth" text="September" 
+						fontSize="42" fontFamily="EmbeddedComicSansMS" color="0x9900FF" 
+						x="{this.width/2-lblMonth.width/2}" y="10"/>
+		</mx:HBox>
+		<mx:HBox>
+			
+			<mx:Label 	id="lblSlide" text="SlideShow" click="onClickSlideShow()" 
+						buttonMode="true" useHandCursor="true" x="10" y="20"
+						fontSize="20" fontFamily="EmbeddedComicSansMS" color="0x9900FF" 
+						mouseOut="onMouseOutLabel()" mouseOver="onMouseOverLabel()"/>
+		</mx:HBox>
+		<mx:HBox>
+		<mx:Button id="btnOpen" label="Open" click="onBtnOpen()"/>
+		<mx:Button id="btnClose" label="Close" click="onBtnClose()"/>
+		</mx:HBox>
+		
+		<mx:VBox id="box" width="100%" height="100%" horizontalAlign="center" verticalAlign="middle" borderColor="0">
+			<mx:VBox borderColor="0" borderStyle="solid" borderThickness="1">
+				<view:RadialTileList id="radialTiles"  width="{RADIAL_WID}" height="{RADIAL_WID}" 
+									 data="{photoService.imgList}" 
+									 radialTileListItemClick="onClick(event)" 
+									 radialTileListItemRollOut="onRollOut(event)" 
+									 radialTileListItemRollOver="onRollOut(event)">
+				</view:RadialTileList>
+			</mx:VBox>
+		</mx:VBox>
+	</mx:VBox>
+</mx:Application>
