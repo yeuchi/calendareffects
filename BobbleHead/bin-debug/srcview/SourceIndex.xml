@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of BobbleHead</title>
+	<nodes>
+		<node label="html-template">
+		</node>
+		<node label="libs">
+		</node>
+		<node label="src" icon="classpathIcon" expanded="true">
+			<node label="assets">
+				<node label="cowboys.png" icon="imageIcon" url="source/assets/cowboys.png.html"/>
+				<node label="marciaBody.png" icon="imageIcon" url="source/assets/marciaBody.png.html"/>
+				<node label="marciaHead.png" icon="imageIcon" url="source/assets/marciaHead.png.html"/>
+				<node label="myHead.png" icon="imageIcon" url="source/assets/myHead.png.html"/>
+				<node label="nelsonBody.png" icon="imageIcon" url="source/assets/nelsonBody.png.html"/>
+				<node label="nelsonBodySmall.png" icon="imageIcon" url="source/assets/nelsonBodySmall.png.html"/>
+				<node label="nelsonHead.png" icon="imageIcon" url="source/assets/nelsonHead.png.html"/>
+				<node label="nelsonHeadSmall.png" icon="imageIcon" url="source/assets/nelsonHeadSmall.png.html"/>
+			</node>
+			<node selected="true" label="BobbleHead.mxml" icon="mxmlAppIcon" url="source/BobbleHead.mxml.html"/>
+		</node>
+	</nodes>
+</index>
