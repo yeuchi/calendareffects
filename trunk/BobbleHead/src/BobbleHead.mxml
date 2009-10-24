@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Module:			BoobleHead
+	
+	Description:	FlashMN October project
+	
+	Author:			C.T. Yeung
+	
+	History:
+	20Oct09			cut out images, start coding		cty
+	21Oct09			functional, meeting 				cty
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+				layout="absolute"
+			    creationComplete="onCreationComplete()" 
+			    width="700" height="700"
+			    backgroundGradientColors="[0xFFFFFF, 0xFBD2F7]"
+>
+	
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable][Embed(source="assets/nelsonBodySmall.png")]public var nelsonBody:Class;
+			[Bindable][Embed(source="assets/marciaBodySmall.png")]public var marciaBody:Class;
+			[Bindable][Embed(source="assets/myBodySmall.png")]public var CTBody:Class;
+			[Bindable][Embed(source="assets/nelsonHeadSmall.png")]public var nelsonHead:Class;
+			[Bindable][Embed(source="assets/marciaHeadSmall.png")]public var marciaHead:Class;
+			[Bindable][Embed(source="assets/myHeadSmall.png")]public var CTHead:Class;
+			[Bindable][Embed(source="assets/bangbang.jpg")]public var bang:Class;
+			
+			protected var bDown:Boolean = false;
+			protected var ptLetGo:Point;
+			protected var ptRest:Point;
+			protected var ptRestCT:Point;
+			protected var ptOffset:Point;
+			protected var factor:Number = 1;
+			protected var signNeg:Boolean = true;
+			protected var angleSign:Boolean = true;
+			protected var offset:Number = 5;
+			protected var angle:Number = 0;
+			protected var count:int = 0;
+			
+			public static const HEAD_ANGLE:Number = -135;
+			
+			protected function onCreationComplete():void {
+				ptRestCT = new Point(240, 420);
+				ptRest = new Point(455, 480);
+				ptLetGo = new Point(435, 510);
+				ptOffset = new Point();
+				initUIC();
+				uicNelsonHead.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, 0, true);
+				uicNelsonHead.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut, false, 0, true);
+				this.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove, false, 0, true);
+				this.addEventListener(MouseEvent.MOUSE_UP, onMouseUp, false, 0, true);
+				this.addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true);
+			}
+			
+			protected function initUIC():void {
+				uicNelsonHead.addChild(new Bitmap(new nelsonHead().bitmapData));
+				uicNelsonHead.x = ptRest.x;
+				uicNelsonHead.y = ptRest.y;
+				uicNelsonHead.rotation = HEAD_ANGLE;
+				
+				uicCTHead.addChild(new Bitmap(new CTHead().bitmapData));
+				uicCTHead.x = ptRestCT.x;
+				uicCTHead.y = ptRestCT.y;
+				uicCTHead.rotation = HEAD_ANGLE-20;
+				
+				uicMarciaHead.addChild(new Bitmap(new marciaHead().bitmapData));
+				uicMarciaHead.x = 560;
+				uicMarciaHead.y = 310;
+				uicMarciaHead.rotation = HEAD_ANGLE;
+				
+				uicNelsonBody.addChild(new Bitmap(new nelsonBody().bitmapData));
+				uicNelsonBody.x = 300;
+				uicNelsonBody.y = 380;
+				
+				uicCTBody.addChild(new Bitmap(new CTBody().bitmapData));
+				uicCTBody.x = 150;
+				uicCTBody.y = 300;
+				
+				uicMarciaBody.addChild(new Bitmap(new marciaBody().bitmapData));
+				uicMarciaBody.x = 390;
+				uicMarciaBody.y = 190;
+				
+				uicBang.addChild(new Bitmap(new bang().bitmapData));
+			}
+
+/////////////////////////////////////////////////////////////////////
+// mouse events
+			
+			protected function onMouseDown(e:MouseEvent):void {
+				bDown = true;
+				ptOffset.x = uicNelsonHead.x - this.mouseX;
+				ptOffset.y = uicNelsonHead.y - this.mouseY;
+			}
+			
+			protected function onMouseMove(e:MouseEvent):void {
+				if(bDown) {
+					var dis:Number = Math.sqrt(Math.pow(uicNelsonHead.x - ptRest.x,2)+Math.pow(uicNelsonHead.y-ptRest.y,2));
+					if(dis < 50) {
+						uicNelsonHead.x = this.mouseX+ptOffset.x;
+						uicNelsonHead.y = this.mouseY+ptOffset.y;
+					}
+				}
+			}
+			
+			protected function isNear(pt1:Point, pt2:Point):Boolean {
+				var x:Number = pt1.x - pt2.x;
+				var y:Number = pt1.y - pt2.y;
+				
+				x = (x<0)?x*-1:x;
+				y = (y<0)?y*-1:y;
+				
+				if((x<1)&&(y<1))	
+					return true;
+				return false;
+			}
+			
+			protected function onMouseUp(e:MouseEvent):void {
+				if(!bDown) return;
+				
+				if(isNear(ptLetGo, ptRest)) {
+					ptLetGo.x = uicNelsonHead.x;
+					ptLetGo.y = uicNelsonHead.y;
+				}
+				bDown = false;
+			}
+			
+			protected function onMouseOut(e:Event):void {
+				if(isNear(ptLetGo, ptRest)&&
+					(uicNelsonHead.rotation == HEAD_ANGLE)) {
+					ptLetGo.y -= 30;
+				}
+			}
+
+/////////////////////////////////////////////////////////////////////
+// animation
+			
+			protected function onEnterFrame(e:Event):void {
+				if( !isNear(ptRest, ptLetGo)||(uicNelsonHead.rotation!=HEAD_ANGLE)) {
+					if(!bDown)
+						bobbleNelson();
+				}
+				else {
+					signNeg = true;
+					factor = 1;
+				}
+				
+				bobbleCT();
+				randomBang();
+			}
+			
+			protected function bobbleNelson():void {
+				uicNelsonHead.x = (ptLetGo.x - ptRest.x)*factor + ptRest.x;
+				uicNelsonHead.y = (ptLetGo.y - ptRest.y)*factor + ptRest.y + Math.cos(getRadian(angle))*offset;
+				uicNelsonHead.rotation += 2*((angleSign)?1:-1);
+				
+				if( (uicNelsonHead.rotation < (HEAD_ANGLE-25))||
+			   		(uicNelsonHead.rotation > (HEAD_ANGLE + 25)))
+					angleSign = !angleSign;
+				
+				angle = (angle<360)?angle+20:0;
+				factor = (signNeg)?factor-.1:factor+.1;
+
+				if((factor<-1)||(factor>1)) {
+					ptLetGo.x = Number(ptLetGo.x-ptRest.x)*.9+ptRest.x;
+					ptLetGo.y = Number(ptLetGo.y-ptRest.y)*.9+ptRest.y;
+					signNeg = (true)?false:true;
+				}
+			}
+			
+			protected var angleSignCT:Boolean = true;
+			protected var countCT:int=0;
+			protected function bobbleCT():void {
+				if(count%3) {
+				if( (uicCTHead.rotationZ < (-45))||
+			   		(uicCTHead.rotationZ > (45)))
+					angleSignCT = !angleSignCT;
+					
+				uicCTHead.rotationZ += 2*((angleSignCT)?1:-1);
+				}
+				count ++;
+			}
+			
+			protected function randomBang():void {
+				if(int(Math.random()*10) % 7 == 0) {
+				uicBang.x = Math.random() * 600;
+				uicBang.y = Math.random() * 600;
+				uicBang.rotation = Math.random() * 180;
+				uicBang.visible = !uicBang.visible;
+				}
+			}
+			
+			protected function getRadian(degrees:Number):Number {
+				return Math.PI / 180.0 * degrees;
+			}
+			
+			protected function getPendulumAngle():Number {
+				var angle:Number;
+				return angle;
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:UIComponent id="uicCTBody"/>
+	<mx:UIComponent id="uicMarciaBody"/>
+	<mx:UIComponent id="uicNelsonBody"/>
+	<mx:UIComponent id="uicMarciaHead"/>
+	<mx:UIComponent id="uicCTHead"/>
+	<mx:UIComponent id="uicNelsonHead" useHandCursor="true" buttonMode="true" toolTip="Click or Drag"/>
+	<mx:UIComponent id="uicBang"/>
+</mx:Application>
