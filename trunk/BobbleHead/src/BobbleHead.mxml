@@ -115,15 +115,15 @@
 	</mx:Script>
 	
 	<v:Background id="uicBack"/>
-	<v:Balloon id="uicBalloon"/>
-	
+	<v:Balloon id="uicBalloon" toolTip="Happy Halloween 09"/>
+	<v:Cactus id="uicCactus"/>
 	<v:BodyCT id="uicCTBody"/>
 	<v:BodyMarcia id="uicMarciaBody"/>
 	<v:BodyNelson id="uicNelsonBody"/>
 	
-	<v:HeadMarcia id="uicMarciaHead" toolTip="She'll show you!"/>
-	<v:HeadCT id="uicCTHead" toolTip="Spare us... Please!"/>
-	<v:HeadNelson id="uicNelsonHead" useHandCursor="true" buttonMode="true" toolTip="Do you feel lucky ?"/>
+	<v:HeadMarcia id="uicMarciaHead" toolTip="Mess with the wrong girl!"/>
+	<v:HeadCT id="uicCTHead" toolTip="Mercy !"/>
+	<v:HeadNelson id="uicNelsonHead" useHandCursor="true" buttonMode="true" toolTip="Make my day...Eh!"/>
 	
 	<v:Bang id="uicBang"/>
 </mx:Application>
