@@ -1,6 +1,7 @@
 package view
 {
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
 	public class HeadCT extends Character

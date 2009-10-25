@@ -121,9 +121,9 @@
 	<v:BodyMarcia id="uicMarciaBody"/>
 	<v:BodyNelson id="uicNelsonBody"/>
 	
-	<v:HeadMarcia id="uicMarciaHead"/>
-	<v:HeadCT id="uicCTHead"/>
-	<v:HeadNelson id="uicNelsonHead" useHandCursor="true" buttonMode="true" toolTip="Click or Drag"/>
+	<v:HeadMarcia id="uicMarciaHead" toolTip="She'll show you!"/>
+	<v:HeadCT id="uicCTHead" toolTip="Spare us... Please!"/>
+	<v:HeadNelson id="uicNelsonHead" useHandCursor="true" buttonMode="true" toolTip="Do you feel lucky ?"/>
 	
 	<v:Bang id="uicBang"/>
 </mx:Application>
