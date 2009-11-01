@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of NelsonOct09</title>
+	<nodes>
+		<node label="html-template">
+			<node label="history">
+				<node label="history.css" icon="cssIcon" url="source/html-template/history/history.css.html"/>
+				<node label="history.js" url="source/html-template/history/history.js.txt"/>
+				<node label="historyFrame.html" icon="htmlIcon" url="source/html-template/history/historyFrame.html"/>
+			</node>
+			<node label="AC_OETags.js" url="source/html-template/AC_OETags.js.txt"/>
+			<node label="index.template.html" icon="htmlIcon" url="source/html-template/index.template.html"/>
+			<node label="playerProductInstall.swf" icon="swfIcon" url="source/html-template/playerProductInstall.swf"/>
+		</node>
+		<node label="libs">
+		</node>
+		<node label="src" icon="classpathIcon" expanded="true">
+			<node label="assets">
+				<node label="bat1.png" icon="imageIcon" url="source/assets/bat1.png.html"/>
+				<node label="bat2.png" icon="imageIcon" url="source/assets/bat2.png.html"/>
+				<node label="bat3.png" icon="imageIcon" url="source/assets/bat3.png.html"/>
+				<node label="ghost1.png" icon="imageIcon" url="source/assets/ghost1.png.html"/>
+				<node label="ghost2.png" icon="imageIcon" url="source/assets/ghost2.png.html"/>
+				<node label="ghost3.png" icon="imageIcon" url="source/assets/ghost3.png.html"/>
+				<node label="ghost4.png" icon="imageIcon" url="source/assets/ghost4.png.html"/>
+				<node label="ghost5.png" icon="imageIcon" url="source/assets/ghost5.png.html"/>
+				<node label="ghost6.png" icon="imageIcon" url="source/assets/ghost6.png.html"/>
+			</node>
+			<node label="com.ctyeung.renderer" icon="packageIcon" expanded="true">
+				<node label="CImage.as" icon="actionScriptIcon" url="source/com/ctyeung/renderer/CImage.as.html"/>
+			</node>
+			<node label="com.ctyeung.services" icon="packageIcon" expanded="true">
+				<node label="PhotoService.as" icon="actionScriptIcon" url="source/com/ctyeung/services/PhotoService.as.html"/>
+			</node>
+			<node label="com.ctyeung.views" icon="packageIcon" expanded="true">
+				<node label="Bat1.as" icon="actionScriptIcon" url="source/com/ctyeung/views/Bat1.as.html"/>
+				<node label="Bat2.as" icon="actionScriptIcon" url="source/com/ctyeung/views/Bat2.as.html"/>
+				<node label="Bat3.as" icon="actionScriptIcon" url="source/com/ctyeung/views/Bat3.as.html"/>
+				<node label="Character.as" icon="actionScriptIcon" url="source/com/ctyeung/views/Character.as.html"/>
+				<node label="Ghost1.as" icon="actionScriptIcon" url="source/com/ctyeung/views/Ghost1.as.html"/>
+				<node label="Ghost2.as" icon="actionScriptIcon" url="source/com/ctyeung/views/Ghost2.as.html"/>
+				<node label="Ghost3.as" icon="actionScriptIcon" url="source/com/ctyeung/views/Ghost3.as.html"/>
+			</node>
+			<node selected="true" label="NelsonOct09.mxml" icon="mxmlAppIcon" url="source/NelsonOct09.mxml.html"/>
+		</node>
+	</nodes>
+</index>
