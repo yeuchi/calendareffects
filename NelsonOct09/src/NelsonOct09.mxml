@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+	Module:			NelsonOct09
+	
+	Description:	
+					
+	Author:			C.T. Yeung		cty
+	
+	History:		written in october 2009			cty
+	
+	Feel free to use this code in anyway you wish.  Credit is greatly appreciate, of course.
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+				xmlns:sv="com.ctyeung.services.*" 
+				xmlns:vw="com.ctyeung.views.*"
+				layout="absolute"
+				backgroundGradientColors="[0x0, 0x441100]"
+			    horizontalScrollPolicy="off"
+			    verticalScrollPolicy="off"
+			    creationComplete="onCreationComplete()" viewSourceURL="srcview/index.html">
+	<mx:Style>
+        @font-face {
+            src: local("Comic Sans MS");
+            fontFamily: EmbeddedComicSansMS;
+            fontWeight: normal;
+        }
+    </mx:Style>
+    
+    <mx:Script>
+    	<![CDATA[
+    		import mx.events.EffectEvent;
+    		import mx.effects.Blur;
+    		import mx.core.UIComponent;
+    		import mx.effects.Resize;
+    		import com.ctyeung.renderer.CImage;
+    		
+    		protected var BLURSTT:int = 0;
+    		protected var BLUREND:int = 80;
+    		protected var index:int = 0;
+    		protected var ptPanel:Point;
+    		protected var wid:int = 100;
+    		protected var listBlur:Array;
+    		
+    		protected function onCreationComplete():void {
+    			ptPanel = new Point(5, 140);
+    			listBlur = new Array();
+    		}
+    		
+    		private function onClickImage(e:MouseEvent):void
+            {
+            	var imp:CImage = e.currentTarget as CImage;
+            	var url:String = imp.url;
+            	url = url.toLowerCase();
+            	url = url.replace("thumb/", "big/");
+            	url = url.replace("thumb", "");
+            	url = url.replace(".jpg", ".JPG");
+            	navigateToURL(new URLRequest(url), "_blank");
+            }
+            
+            private function onClickSlideShow():void
+            {
+            	navigateToURL(new URLRequest("/flex/gallery/FlexEx1.html"), "_blank");
+            }
+            
+            private function onClickBobbleHead():void {
+            	navigateToURL(new URLRequest("/flex/BobbleHead/BobbleHead.swf"), "_blank");
+            }
+            
+            private function onMouseOverLabel():void
+            {
+            	lblSlide.alpha = .5;
+            }
+            
+            private function onMouseOutLabel():void
+            {
+            	lblSlide.alpha = 1;
+            }
+            
+            private function onMouseOut(e:MouseEvent):void
+			{
+				var img:CImage = e.currentTarget as CImage;
+				var i:int = parseInt(img.id);
+				blurOut(i);
+			}
+			
+			private function onMouseOver(e:MouseEvent):void
+			{
+				var img:CImage = e.currentTarget as CImage;
+				var i:int = parseInt(img.id);
+				blurIn(i);
+			}
+            
+    		protected function onReadyPhoto():void {
+    			var imgList:Array = photos.imgList;	
+				var img:CImage = imgList[index] as CImage;
+				img.id = index.toString();
+				this.addChildAt(img, 0);
+				
+				img.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+				img.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+				img.addEventListener(MouseEvent.CLICK, onClickImage);
+				img.buttonMode = true;
+				img.useHandCursor = true;
+				
+				img.x = ptPanel.x;
+				img.y = ptPanel.y;
+				startBlur(img);
+				
+				ptPanel.x += wid + 5;
+				
+				if ( ( ptPanel.x + wid ) >=  this.width ) {
+					ptPanel.x = 5;
+					ptPanel.y += wid + 5;
+				}
+				index ++;
+    		}
+    		
+    		protected function startBlur(img:CImage):void {
+    			var blur:Blur = new Blur();
+    			blur.target = img;
+    			listBlur.push(blur);
+    			blurOut(parseInt(img.id));
+    		}
+    		
+    		protected function blurIn(i:int):void {
+    			var blur:Blur = listBlur[i];
+				blur.stop();
+				blur.blurXFrom = BLUREND;
+				blur.blurXTo = BLURSTT;
+				blur.blurYFrom = BLUREND;
+				blur.blurYTo = BLURSTT;
+				blur.play();
+    		}
+    		
+    		protected function blurOut(i:int):void {
+    			var blur:Blur = listBlur[i];
+    			blur.stop();
+    			blur.blurXFrom = BLURSTT;
+    			blur.blurXTo = BLUREND;
+    			blur.blurYFrom = BLURSTT;
+    			blur.blurYTo = BLUREND;
+    			blur.duration = 2000;
+    			blur.play();
+    		}
+    		
+    		protected function onMouseOverMonth():void {
+    			for (var i:int; i<listBlur.length; i++) 
+					blurIn(i);    				
+    		}
+    		
+    		protected function onMouseOutMonth():void {
+    			for (var i:int; i<listBlur.length; i++) 
+					blurOut(i); 
+    		}
+    	]]>
+    </mx:Script>
+    
+    <sv:PhotoService id="photos" loadCompleted="onReadyPhoto()"/>
+    <mx:Label id="lblMonth" text="October" 
+					fontSize="42" fontFamily="EmbeddedComicSansMS" color="0x9900FF" 
+					x="{this.width/2-lblMonth.width/2}" y="10" mouseOver="onMouseOverMonth()" mouseOut="onMouseOutMonth()"/>
+		<mx:Label 	id="lblSlide" text="SlideShow" click="onClickSlideShow()" 
+					buttonMode="true" useHandCursor="true" x="10" y="20"
+					fontSize="20" fontFamily="EmbeddedComicSansMS" color="0x9900FF" 
+					mouseOut="onMouseOutLabel()" mouseOver="onMouseOverLabel()"/>
+		<mx:Label 	id="lblBobble" text="BobbleHead" click="onClickBobbleHead()" 
+					buttonMode="true" useHandCursor="true" x="10" y="60"
+					fontSize="20" fontFamily="EmbeddedComicSansMS" color="0x9900FF" 
+					mouseOut="{lblBobble.alpha=1.0}" mouseOver="{lblBobble.alpha=0.5}"/>
+	<vw:Ghost1 id="ghost1"/>
+	<vw:Ghost2 id="ghost2"/>
+	<vw:Ghost3 id="ghost3"/>
+	<vw:Bat1 id="bat1"/>
+	<vw:Bat2 id="bat2"/>
+	<vw:Bat3 id="bat3"/>
+</mx:Application>
