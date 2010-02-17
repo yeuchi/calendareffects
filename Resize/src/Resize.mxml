@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+				layout="absolute"
+			    creationComplete="onCreationComplete()">
+	
+	<mx:Script>
+		<![CDATA[
+			[Bindable]protected var listImages:Array;
+			protected var bmd:BitmapData;
+			[Bindable][Embed(source="asset/gene_Marc.jpg")]public var photoClass1:Class;
+			[Bindable][Embed(source="asset/bill.jpg")]public var photoClass2:Class;
+			
+			protected function onCreationComplete():void {
+				listImages = ["image1", "image2"];
+				cmbImage.selectedIndex = 0;
+				onComboImage();
+				onBtnSize();
+			}
+			
+			public function empty():void {
+				if(uicBiLinear.numChildren){
+					uicBiLinear.removeChildAt(0);
+					uicBiLinear.filters=[];
+				}
+				if(uicPyramid.numChildren){
+					uicPyramid.removeChildAt(0);
+					uicPyramid.filters=[];
+				}
+				if(uicCubicSpline.numChildren){
+					uicCubicSpline.removeChildAt(0);
+					uicCubicSpline.filters = [];
+				}
+				if(uicRect.numChildren){
+					uicRect.removeChildAt(0);
+					uicRect.filters = [];
+				}
+			}		
+			
+			protected function onComboImage():void {
+				switch(this.cmbImage.selectedIndex) {
+					case 0:
+						bmd = new photoClass1().bitmapData;
+						break;
+					
+					default:
+						bmd = new photoClass2().bitmapData;
+				}
+				empty();
+				uicBiLinear.addChild(new Bitmap(bmd));
+			}
+			
+			protected function onBtnSize():void {
+				if(!bmd) return;
+				empty();
+				uicBiLinear.addChild(new Bitmap(bmd));
+				uicBiLinear.filters = [BiLinear2X.shaderFilter];
+				
+				uicPyramid.addChild(new Bitmap(bmd));
+				uicPyramid.filters = [Pyramid2X.shaderFilter];
+				
+				uicCubicSpline.addChild(new Bitmap(bmd));
+				uicCubicSpline.filters = [CubicSpline2X.shaderFilter];
+				
+				uicRect.addChild(new Bitmap(bmd));
+				uicRect.filters = [Rect2X.shaderFilter];
+			}
+		]]>
+	</mx:Script>
+	<mx:HBox x="500" y="10">	
+		<mx:Button id="btnSize" label="2X" click="onBtnSize()"/>
+		<mx:ComboBox id="cmbImage" dataProvider="{listImages}" change="onComboImage()"/>
+	</mx:HBox>
+	
+	<mx:VBox x="50" y="40">
+		<mx:Label text="Bilinear"/>
+		<mx:UIComponent id="uicBiLinear" height="300"/>
+		<mx:Label text="CubicSpline"/>
+		<mx:UIComponent id="uicCubicSpline" height="300"/>
+	</mx:VBox>
+	<mx:VBox x="500" y="40">
+		<mx:Label text="Pyramid"/>
+		<mx:UIComponent id="uicPyramid" height="300"/>
+		<mx:Label text="Rect"/>
+		<mx:UIComponent id="uicRect" height="300"/>
+	</mx:VBox>
+	
+	
+		
+</mx:Application>

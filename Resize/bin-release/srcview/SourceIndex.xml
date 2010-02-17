@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of Resize</title>
+	<nodes>
+		<node label="html-template">
+		</node>
+		<node label="libs">
+		</node>
+		<node label="src" icon="classpathIcon" expanded="true">
+			<node label="asset">
+				<node label="BiLinear2X.pbj" url="source/asset/BiLinear2X.pbj"/>
+				<node label="BiLinear2X.pbk" url="source/asset/BiLinear2X.pbk"/>
+				<node label="Bill.JPG" icon="imageIcon" url="source/asset/Bill.JPG.html"/>
+				<node label="CubicSpline2X.pbj" url="source/asset/CubicSpline2X.pbj"/>
+				<node label="CubicSpline2X.pbk" url="source/asset/CubicSpline2X.pbk"/>
+				<node label="gene_Marc.JPG" icon="imageIcon" url="source/asset/gene_Marc.JPG.html"/>
+				<node label="Pyramid2X.pbj" url="source/asset/Pyramid2X.pbj"/>
+				<node label="Pyramid2X.pbk" url="source/asset/Pyramid2X.pbk"/>
+				<node label="Rect2X.pbj" url="source/asset/Rect2X.pbj"/>
+				<node label="Rect2X.pbk" url="source/asset/Rect2X.pbk"/>
+			</node>
+			<node label="BiLinear2X.as" icon="actionScriptIcon" url="source/BiLinear2X.as.html"/>
+			<node label="CubicSpline2X.as" icon="actionScriptIcon" url="source/CubicSpline2X.as.html"/>
+			<node label="Pyramid2X.as" icon="actionScriptIcon" url="source/Pyramid2X.as.html"/>
+			<node label="Rect2X.as" icon="actionScriptIcon" url="source/Rect2X.as.html"/>
+			<node selected="true" label="Resize.mxml" icon="mxmlAppIcon" url="source/Resize.mxml.html"/>
+		</node>
+	</nodes>
+</index>
