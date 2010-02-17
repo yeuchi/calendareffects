@@ -1,0 +1,94 @@
+/*  Moudle:      Pyramid2X
+*   
+*   Description: Pyramid interpolation, magify by 2 only.
+*
+*   Input:       image
+*   Output:      image resized 2X in width and height
+*
+*   Author:      C.T. Yeung      cty
+*   Company:     Jostens 2009
+*
+*   History:  
+*   13Feb       start coding.                   cty
+*/
+
+<languageVersion : 1.0;>
+
+kernel ResizeBilinear
+<   namespace :   "Pyramid2X";
+    vendor :      "Jostens";
+    version :     1;
+    description : "enlarge width and height twice";
+>
+{      
+    input image4 src;
+    output pixel4 dst;
+    
+    void
+    evaluatePixel()
+    {
+        //  position relatively to center(base)point
+        float2 po = outCoord();
+        float2 p1;
+        
+        float4 ctr;
+        float4 quad;
+        int x, y;
+
+        po.x = po.x * .5;
+        po.y = po.y * .5;
+        p1 = po;
+        
+        x = int(mod(po.x*2.0, 2.0));
+        y = int(mod(po.y*2.0, 2.0));
+        
+        ctr = sampleNearest(src, po);
+        
+        if((0==x)&&(0==y))
+            dst = ctr;
+    
+        else if (0==x) {    // vertical convolution
+            ctr = ctr*2.0/4.0;
+            p1.y = p1.y - .5;
+            ctr += sampleNearest(src, p1)/4.0;
+            p1.y = p1.y + 1.0;
+            ctr += sampleNearest(src, p1)/4.0;
+            dst = ctr;
+        }
+        else if (0==y) {    // horizontal convolution
+            ctr = ctr*2.0/4.0;
+            p1.x = p1.x - .5;
+            ctr += sampleNearest(src, p1)/4.0;
+            p1.x = p1.x + 1.0;
+            ctr += sampleNearest(src, p1)/4.0;
+            dst = ctr;
+        }
+        else {               // 5x5 convolution
+            // top row
+            p1.x = p1.x - .5;
+            p1.y = p1.y - .5;
+            quad = sampleNearest(src, p1)/16.0;
+            p1.x = p1.x + .5;
+            quad = quad + sampleNearest(src, p1)*2.0/16.0;
+            p1.x = p1.x + .5;
+            quad = quad + sampleNearest(src, p1)/16.0;
+            
+            // center row
+            p1.y = p1.y + .5;
+            quad = quad + sampleNearest(src, p1)*2.0/16.0;
+            quad = quad + ctr*4.0/16.0;
+            p1.x = p1.x - 1.0;
+            quad = quad + sampleNearest(src, p1)*2.0/16.0;
+            
+            // bottom row
+            p1.y = p1.y + .5;
+            quad = quad + sampleNearest(src, p1)/16.0;
+            p1.x = p1.x + .5;
+            quad = quad + sampleNearest(src, p1)*2.0/16.0;
+            p1.x = p1.x + .5;
+            quad = quad + sampleNearest(src, p1)/16.0;
+            
+            dst = quad;
+        }
+    }
+}
