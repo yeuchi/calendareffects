@@ -29,10 +29,41 @@ kernel ResizeBilinear
     {
         //  position relatively to center(base)point
         float2 po = outCoord();
+        float2 p;
+        int x,y;
 
         po.x = po.x * .5;
         po.y = po.y * .5;
         
-        dst = sampleNearest(src, po);
+        x = int(mod(po.x*2.0, 2.0));
+        y = int(mod(po.y*2.0, 2.0));
+        
+        if((0==x)&&(0==y))
+            dst = sampleNearest(src, po);
+            
+        else if(0==x) {         // vertical convolution
+            p = po;
+            p.y = po.y - .5;
+            dst = sampleNearest(src, p)/2.0;
+            dst += sampleNearest(src, po)/2.0;
+        }
+        else if(0==y) {         // horizontal convolution
+            p = po;
+            p.x = po.x - .5;
+            dst = sampleNearest(src, p)/2.0;
+            dst += sampleNearest(src, po)/2.0;
+        }
+        else {
+            p = po;
+            p.x = po.x - .5;
+            p.y = po.y - .5;
+            dst = sampleNearest(src, p)/4.0;
+            p.x = po.x;
+            dst += sampleNearest(src, p)/4.0;
+            p.x = po.x - .5;
+            p.y = po.y;
+            dst += sampleNearest(src, p)/4.0;
+            dst += sampleNearest(src, po)/4.0;
+        }
     }
 }
