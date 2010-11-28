@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   width="800" height="700"
+			   backgroundColor="0xFBD2F7"
+			   creationComplete="onCreationComplete()">
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import Events.CharacterEvent;
+			
+			import Renderers.CImage;
+			import Renderers.Globe;
+			import Renderers.Snow;
+			
+			import Views.CT;
+			import Views.Castle;
+			import Views.Family;
+			
+			protected var uicGlobe:Globe;
+			protected var castle:Castle;
+			protected var mice:Family;
+			protected var ct:CT;
+			
+			protected function onCreationComplete():void {
+				this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, false, 0, true);
+				castle = new Castle();
+				mice = new Family();
+				ct = new CT();
+				ct.visible = false;
+				//castle.addEventListener(CharacterEvent.LOAD_COMPLETE, onLoadComplete, false, 0, true);
+				//mice.addEventListener(CharacterEvent.LOAD_COMPLETE, onLoadComplete, false, 0, true);
+			}
+			
+			protected function onLoadComplete(e:Event):void {
+				uicGlobe.init();
+			}
+			
+			protected function onAddedToStage(e:Event):void {
+				uicGlobe = new Globe(this.width, this.height);
+				uicGlobe.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDownGlobe, false, 0, true);
+				uicGlobe.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMoveGlobe, false, 0, true);
+				uicGlobe.addEventListener(MouseEvent.MOUSE_UP, onMouseUpGlobe, false, 0, true);
+				
+				uic.addChild(uicGlobe);
+				uicGlobe.addChildAt(castle, 0);
+				uicGlobe.addChildAt(mice, 1);
+				uicGlobe.addChildAt(ct, 1);
+			}
+			
+			/////////////////////////////////////////////////////////////////////
+			// Globe			
+			protected function onMouseDownGlobe(e:Event):void {
+				uicGlobe.mouseDown = true;
+				uicGlobe.ptDown.x = this.mouseX;
+				uicGlobe.ptDown.y = this.mouseY;
+			}
+			
+			protected function onMouseMoveGlobe(e:Event):void {
+				if(!uicGlobe.mouseDown)	return;
+				
+				uicGlobe.drag(mouseX, mouseY);
+			}
+			
+			protected function onMouseUpGlobe(e:Event):void {
+				uicGlobe.mouseDown = false;
+			}
+			
+			
+			/////////////////////////////////////////////////////////////////////
+			// slide show
+			
+			private function onClickSlideShow():void
+			{
+				navigateToURL(new URLRequest("http://www.ctyeung.com/flex/gallery/FlexEx1.html"), "_blank");
+			}
+			
+			private function onMouseOverLabel():void
+			{
+				ct.visible = true;
+				lblSlide.alpha = .5;
+			}
+			
+			private function onMouseOutLabel():void
+			{
+				ct.visible = false;
+				lblSlide.alpha = 1;
+			}
+		
+		]]>
+	</fx:Script>
+	
+	<mx:UIComponent id="uic" width="100%" height="100%" useHandCursor="true" toolTip="shake"/>
+	<mx:Label     id="lblSlide" text="Happy Holidays" click="onClickSlideShow()" 
+				  buttonMode="true" useHandCursor="true" x="10" y="20"
+				  fontSize="24" fontFamily="EmbeddedComicSansMS" color="0x9900FF" 
+				  mouseOut="onMouseOutLabel()" mouseOver="onMouseOverLabel()"/>
+	
+</s:Application>
