@@ -25,6 +25,8 @@
 			protected var castle:Castle;
 			protected var mice:Family;
 			protected var ct:CT;
+			protected var soundTrack:Sound;
+			protected var channel:SoundChannel;
 			
 			protected function onCreationComplete():void {
 				this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, false, 0, true);
@@ -32,8 +34,21 @@
 				mice = new Family();
 				ct = new CT();
 				ct.visible = false;
+				soundTrack = new Sound(new URLRequest("http://www.ctyeung.com/flex/SnowGlobe/assets/deckTheHalls.mp3"));
+				
+				soundTrack.addEventListener(Event.COMPLETE, onReadySound, false, 0, true);
 				//castle.addEventListener(CharacterEvent.LOAD_COMPLETE, onLoadComplete, false, 0, true);
 				//mice.addEventListener(CharacterEvent.LOAD_COMPLETE, onLoadComplete, false, 0, true);
+			}
+			
+			protected function onReadySound(e:Event):void {
+				channel = soundTrack.play();
+				channel.addEventListener(Event.SOUND_COMPLETE, onAudioEnd, false, 0, true);
+			}
+			
+			protected function onAudioEnd(e:Event):void {
+				channel.removeEventListener(Event.SOUND_COMPLETE, onAudioEnd);
+				channel = null;
 			}
 			
 			protected function onLoadComplete(e:Event):void {
@@ -62,8 +77,9 @@
 			
 			protected function onMouseMoveGlobe(e:Event):void {
 				if(!uicGlobe.mouseDown)	return;
-				
 				uicGlobe.drag(mouseX, mouseY);
+				if(!channel)
+					onReadySound(null);
 			}
 			
 			protected function onMouseUpGlobe(e:Event):void {
@@ -94,7 +110,7 @@
 		]]>
 	</fx:Script>
 	
-	<mx:UIComponent id="uic" width="100%" height="100%" useHandCursor="true" toolTip="shake"/>
+	<mx:UIComponent id="uic" width="100%" height="100%" useHandCursor="true" toolTip="mouse-down-drag to shake!"/>
 	<mx:Label     id="lblSlide" text="Happy Holidays" click="onClickSlideShow()" 
 				  buttonMode="true" useHandCursor="true" x="10" y="20"
 				  fontSize="24" fontFamily="EmbeddedComicSansMS" color="0x9900FF" 
