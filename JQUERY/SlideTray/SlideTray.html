@@ -1,0 +1,140 @@
+<!-- Module: 		SlideTray
+     Description:	Simple slide tray exercise
+     Author:		C.T. Yeung
+  -->
+<!DOCTYPE html PUBLIC >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+
+  	<script src="http://code.jquery.com/jquery-latest.js"></script>
+  	<script>
+	$(document).ready(function() {
+		var listIds = new Array();
+		var trayWidth = 0;
+		var travel;
+		var SLIDE_TRAY = "slideTray";
+		var HSPACE = 5;
+		
+		$(".img").click(function () {
+			var parentId = $(this).parent().attr("id");
+			if(parentId != SLIDE_TRAY) 
+				enqueue(this);
+			else
+				dequeue(this);
+		});
+		
+		function dequeue(item) {
+			var currentId = $(item).attr("id");
+			var itemWidth = item.width;
+			
+			if(listIds.length>1)
+				trayWidth = trayWidth - (itemWidth+HSPACE);
+			
+			for(var i=0; i<listIds.length; i++) {
+				if(currentId == listIds[i]) {
+					
+					if(i<listIds.length-1) {
+						var nextId = listIds[i+1];
+						var travel = itemWidth;
+						if(i==0)
+							travel += HSPACE;
+						$("#"+nextId).animate({"margin-left": "-="+(travel)+"px"}, 1000, function() {
+							$("#"+currentId).remove();
+							$("#"+nextId).animate({"margin-left": "+="+(itemWidth)+"px"}, 0);
+							listIds.splice(i, 1);
+							$("#"+SLIDE_TRAY).width(trayWidth);
+						});
+					}
+					else {
+						$("#"+currentId).remove();
+						listIds.splice(i, 1);
+						$("#"+SLIDE_TRAY).width(trayWidth);
+					}
+					
+					break;
+				}
+			}
+		}
+		
+		function enqueue(item) {
+			var currentId;
+			var newId = $(item).attr("id");
+			
+			if(listIds.length) {
+				currentId = listIds[0];
+				trayWidth += item.width + HSPACE;
+				$("#"+SLIDE_TRAY).width( trayWidth);
+				
+				$("#"+currentId).animate({"margin-left": "+="+(item.width+HSPACE)+"px"}, 1000, function() {
+					$("#"+newId).insertBefore("#"+currentId);		
+					$("#"+currentId).animate({"margin-left": "-="+item.width+"px"},0);	
+				});
+				listIds.splice(0, 0, newId);
+			}
+			else {
+				var real_width;
+				$("#"+SLIDE_TRAY).append($(item));
+				trayWidth = item.width;
+				listIds.push(newId);
+			}
+		}
+  	});
+	</script>
+</head>
+
+<body style="position:relative">
+
+<div id="slideTray" 
+	style="top:30; left:30; 
+    position:relative; 
+    width:100; 
+    height:100;
+    border-color:#0C0; 
+    border-style:solid; 
+    border-width:thick;" >
+    
+</div>
+
+<div id="container1" 
+	style="top:100; left:30; 
+    position:relative; 
+    border-color:#00C; 
+    width:600;
+    height:100;
+    border-style:dashed; 
+    border-width:thin;" >
+    
+	<img id="img0" class="img" src="thumb0.jpg"/>
+    <img id="img1" class="img" src="thumb1.jpg"/>
+    <img id="img2" class="img" src="thumb2.jpg"/>
+    <img id="img3" class="img" src="thumb3.jpg"/>
+    <img id="img4" class="img" src="thumb4.jpg"/>
+</div>
+
+<div id="container2" 
+	style="top:150; left:80; 
+    position:relative; 
+    border-color:#C00; 
+    width:600;
+    height:100;
+    border-style:dashed; 
+    border-width:thin;" >
+    
+	<img id="img5" class="img" src="thumb5.jpg"/>
+    <img id="img6" class="img" src="thumb6.jpg"/>
+    <img id="img7" class="img" src="thumb7.jpg"/>
+    <img id="img8" class="img" src="thumb8.jpg"/>
+    <img id="img9" class="img" src="thumb9.jpg"/>
+</div>
+
+<div id="controls" 
+	style="top:150; left:100; 
+    position:relative;" >
+<p> Hello JQuery World !  This is my first jquery exercise.<br> Click images to insert or remove from slideTray.</p>
+
+</div>
+
+</body>
+</html>
