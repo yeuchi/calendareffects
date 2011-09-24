@@ -20,12 +20,12 @@
 		$(".img").click(function () {
 			var parentId = $(this).parent().attr("id");
 			if(parentId != SLIDE_TRAY) 
-				enqueue(this);
+				add(this);
 			else
-				dequeue(this);
+				remove(this);
 		});
 		
-		function dequeue(item) {
+		function remove(item) {
 			var currentId = $(item).attr("id");
 			var itemWidth = item.width;
 			
@@ -44,7 +44,7 @@
 							$("#"+currentId).remove();
 							$("#"+nextId).animate({"margin-left": "+="+(itemWidth)+"px"}, 0);
 							listIds.splice(i, 1);
-							$("#"+SLIDE_TRAY).width(trayWidth);
+							$("#"+SLIDE_TRAY).animate({"width": trayWidth+"px"}, 100);
 						});
 					}
 					else {
@@ -58,15 +58,14 @@
 			}
 		}
 		
-		function enqueue(item) {
+		function add(item) {
 			var currentId;
 			var newId = $(item).attr("id");
 			
 			if(listIds.length) {
 				currentId = listIds[0];
 				trayWidth += item.width + HSPACE;
-				$("#"+SLIDE_TRAY).width( trayWidth);
-				
+				$("#"+SLIDE_TRAY).animate({"width": trayWidth+"px"}, 100);
 				$("#"+currentId).animate({"margin-left": "+="+(item.width+HSPACE)+"px"}, 1000, function() {
 					$("#"+newId).insertBefore("#"+currentId);		
 					$("#"+currentId).animate({"margin-left": "-="+item.width+"px"},0);	
