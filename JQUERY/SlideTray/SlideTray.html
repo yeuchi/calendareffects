@@ -40,10 +40,12 @@
 						var travel = itemWidth;
 						if(i==0)
 							travel += HSPACE;
+							
+						$("#"+currentId).remove();
+						$("#"+nextId).animate({"margin-left": "+="+(itemWidth)+"px"}, 0);
+						listIds.splice(i, 1);
+							
 						$("#"+nextId).animate({"margin-left": "-="+(travel)+"px"}, 1000, function() {
-							$("#"+currentId).remove();
-							$("#"+nextId).animate({"margin-left": "+="+(itemWidth)+"px"}, 0);
-							listIds.splice(i, 1);
 							$("#"+SLIDE_TRAY).animate({"width": trayWidth+"px"}, 100);
 						});
 					}
@@ -131,7 +133,9 @@
 <div id="controls" 
 	style="top:150; left:100; 
     position:relative;" >
-<p> Hello JQuery World !  This is my first jquery exercise.<br> Click images to insert or remove from slideTray.</p>
+<p> Hello JQuery World !  This is my first jquery exercise.<br> 
+Click images to insert or remove from slideTray.<br>
+Use and/or feedback is appreciated.</p>
 
 </div>
 
