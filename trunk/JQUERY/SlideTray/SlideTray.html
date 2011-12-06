@@ -1,13 +1,16 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
 <!-- Module: 		SlideTray
      Description:	Simple slide tray exercise
      Author:		C.T. Yeung
   -->
-<!DOCTYPE html PUBLIC >
-<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Untitled Document</title>
 
+	<LINK REL=StyleSheet HREF="default.css" TYPE="text/css"> 
   	<script src="http://code.jquery.com/jquery-latest.js"></script>
   	<script>
 	$(document).ready(function() {
@@ -78,6 +81,7 @@
 				var real_width;
 				$("#"+SLIDE_TRAY).append($(item));
 				trayWidth = item.width;
+				$("#"+SLIDE_TRAY).width(trayWidth);
 				listIds.push(newId);
 			}
 		}
@@ -87,25 +91,11 @@
 
 <body style="position:relative">
 
-<div id="slideTray" 
-	style="top:30; left:30; 
-    position:relative; 
-    width:100; 
-    height:100;
-    border-color:#0C0; 
-    border-style:solid; 
-    border-width:thick;" >
+<div id="slideTray">
     
 </div>
 
-<div id="container1" 
-	style="top:100; left:30; 
-    position:relative; 
-    border-color:#00C; 
-    width:600;
-    height:100;
-    border-style:dashed; 
-    border-width:thin;" >
+<div id="container1">
     
 	<img id="img0" class="img" src="thumb0.jpg"/>
     <img id="img1" class="img" src="thumb1.jpg"/>
@@ -114,14 +104,7 @@
     <img id="img4" class="img" src="thumb4.jpg"/>
 </div>
 
-<div id="container2" 
-	style="top:150; left:80; 
-    position:relative; 
-    border-color:#C00; 
-    width:600;
-    height:100;
-    border-style:dashed; 
-    border-width:thin;" >
+<div id="container2">
     
 	<img id="img5" class="img" src="thumb5.jpg"/>
     <img id="img6" class="img" src="thumb6.jpg"/>
@@ -133,9 +116,9 @@
 <div id="controls" 
 	style="top:150; left:100; 
     position:relative;" >
-<p> Hello JQuery World !  This is my first jquery exercise.<br> 
+<p> Hello JQuery World !  This is my slideTray jquery exercise.<br> 
 Click images to insert or remove from slideTray.<br>
-Use and/or feedback is appreciated.</p>
+Hope you find this useful !</p>
 
 </div>
 
